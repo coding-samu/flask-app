@@ -56,5 +56,14 @@ def create_user():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/users/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    user = User.query.get(user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({'message': 'User deleted'}), 200
+    return jsonify({'error': 'User not found'}), 404
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
